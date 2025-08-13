@@ -42,6 +42,7 @@ function mostrarPosts(){
             ${pegaItem.image? `<img src= ${pegaItem.image} />` : ""}
             <p>Categoria: ${pegaItem.category}</p>
             <p>Data e Hora: ${pegaItem.date}</p>
+            <p>Status: ${pegaItem.status}</p>
             <button onclick="editarPost(${index})">Editar</button>
             <button onclick="apagarPost(${index})">Apagar</button>
             `;
@@ -55,10 +56,33 @@ function apagarPost(indice) {
 }
 
 function editarPost(indice) {
-    const novoStatus = prompt("Digite o novo status (pendente/concluída):", posts[indice].status);
+    
+    const select = document.createElement("select");
 
-    if (novoStatus) {
-        posts[indice].status = novoStatus;
-        mostrarPosts();
+    const opcaoPendente = document.createElement("option");
+    opcaoPendente.value = "⏳ Pendente";
+    opcaoPendente.textContent = "⏳ Pendente";
+
+    const opcaoConcluida = document.createElement("option");
+    opcaoConcluida.value = "✅ Concluída";
+    opcaoConcluida.textContent = "✅ Concluída";
+
+    select.appendChild(opcaoPendente);
+    select.appendChild(opcaoConcluida);
+
+    
+    select.value = posts[indice].status;
+
+    
+    const confirmacao = confirm("Quer mudar o status? Se sim, escolha na lista que aparecer.");
+    if (confirmacao) {
+        document.body.appendChild(select);
+        select.focus();
+
+        select.addEventListener("change", function () {
+            posts[indice].status = select.value;
+            mostrarPosts();
+            document.body.removeChild(select); 
+        });
     }
 }
