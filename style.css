@@ -10,7 +10,7 @@ body {
 
 .container {
     width: 80%; /* Define a largura máxima do conteúdo */
-    margin: 20px; /* Adiciona margens laterais */
+    margin: 10px; /* Adiciona margens laterais */
 }
 
 header {

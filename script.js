@@ -1,22 +1,5 @@
 // Dados de exemplo dos posts
 let posts = [
-    {
-        text: "Este é o primeiro post",
-        category: "Notícias",
-        image: "https://placedog.net/150?random=1",
-        date: "12/10/2021 12:00:00"
-    },
-    {
-        text: "Este é o segundo post",
-        category: "Dicas",
-        image: "https://placedog.net/150?random=2",
-        date: "12/10/2022 12:00:00"
-    },
-    {
-        text: "Este é o terceiro post teste",
-        category: "Eventos",
-        date: "12/10/2023 12:00:00"
-    }
 ];
 
 window.onload = function (){
@@ -30,31 +13,52 @@ function addPost(infosDoEvento){
     const textPost = document.querySelector("#postText").value;
     const categoriaPost = document.querySelector("#postCategory").value;
     const imagePost = document.querySelector("#postImage").value;
+    const statusPost = document.querySelector("#statusPost").value;
 
     const novoPost = {
         text: textPost,
         category: categoriaPost,
         image: imagePost,
-        date: new Date().toLocaleDateString()
+        date: new Date().toLocaleDateString(),
+        status: statusPost,
     }
+
+    posts.push(novoPost);
+
+    mostrarPosts();
+
+    document.querySelector("#postForm").reset();
 }
 function mostrarPosts(){
-    const listaPosts = document.querySelector("#postList")
+    const listaPosts = document.querySelector("#postList");
+    listaPosts.innerHTML = "";
 
-    posts.forEach(pegaItem => {
+    posts.forEach((pegaItem, index) => {
 
-        const cardPost = document.createElement("div")
+        const cardPost = document.createElement("div");
 
         cardPost.innerHTML = `
             <h2>${pegaItem.text}</h2>
             ${pegaItem.image? `<img src= ${pegaItem.image} />` : ""}
             <p>Categoria: ${pegaItem.category}</p>
             <p>Data e Hora: ${pegaItem.date}</p>
-            <button>Editar</button>
-            <button>Apagar</button>
-            `
+            <button onclick="editarPost(${index})">Editar</button>
+            <button onclick="apagarPost(${index})">Apagar</button>
+            `;
         
     listaPosts.append(cardPost);
-    })
+    });
+}
+function apagarPost(indice) {
+    posts.splice(indice, 1); 
+    mostrarPosts();
 }
 
+function editarPost(indice) {
+    const novoStatus = prompt("Digite o novo status (pendente/concluída):", posts[indice].status);
+
+    if (novoStatus) {
+        posts[indice].status = novoStatus;
+        mostrarPosts();
+    }
+}
