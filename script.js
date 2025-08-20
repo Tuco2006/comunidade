@@ -3,10 +3,24 @@ let posts = [
 ];
 
 window.onload = function (){
+    carregarLocalStorage();
     mostrarPosts();
 
     document.querySelector("#postForm").addEventListener('submit', addPost)
 }
+function salvarLocalstorage(){
+    localStorage.setItem(JSON.stringify(posts));
+
+}
+function carregarLocalStorage(){
+    postGuardados = localStorage.getItem("posts")
+
+    if(postGuardados){
+        posts = JSON.parse(postsGuardados)
+    }
+
+}
+
 function addPost(infosDoEvento){
     infosDoEvento.preventDefault();
 
@@ -52,6 +66,7 @@ function mostrarPosts(){
 }
 function apagarPost(indice) {
     posts.splice(indice, 1); 
+    salvarLocalstorage();
     mostrarPosts();
 }
 
@@ -81,6 +96,7 @@ function editarPost(indice) {
 
         select.addEventListener("change", function () {
             posts[indice].status = select.value;
+            salvarLocalstorage();
             mostrarPosts();
             document.body.removeChild(select); 
         });
